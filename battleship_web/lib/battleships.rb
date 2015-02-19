@@ -9,7 +9,6 @@ class BattleShips < Sinatra::Base
 
   game = Game.new
   board = Board.new({size:2, content:Cell})
-
   enable :sessions
 
   get '/homepage' do
@@ -25,12 +24,26 @@ class BattleShips < Sinatra::Base
     if params[:name].empty?
       erb :new_game
     else
-      player = Player.new(params[:name])
-      game.add_player player
-      session[:me] = player
+      @player = Player.new(params[:name])
+      game.add_player @player
+      session[:me] = @player
+      p @player
       erb :start_game
     end
   end
+
+  get './start_game' do
+      @player = session[:me]
+      # erb :new_game
+      # @board = Board.new({size: 10, content: Cell})
+      # erb :start_game
+
+
+  end
+
+
+
+
 
   # start the server if ruby file executed directly
   run! if app_file == $0
